@@ -11,6 +11,7 @@ using namespace std;
 #include <QApplication>
 #include <QProcess>
  #include <QFileInfo>
+#include <string>
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<unsigned long long> list_of_synapses ;
 std::vector<unsigned long long
@@ -42,15 +43,20 @@ Dialog::Dialog(QWidget *parent)
     , ui(new Ui::Dialog)
 {
    ui->setupUi(this);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     std::ifstream is(
-        "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt"
+ // "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt" // 1.bmp
+   //   "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1-1/neyroni_i_signal.txt" // 1-1.bmp
+       
+       "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/0/neyroni_i_signal.txt"
+       
+      //NOTE: считывание в вектор нейронов и сигналов из файла (НАДО Менять для подстройки)
         );
     std::istream_iterator<unsigned long long> start(is), end;
     std::vector<unsigned long long> list_of_neurons(start, end);
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     std::ifstream is2("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt-4");
     std::istream_iterator<unsigned long long> start2(is2), end2;
     std::vector<unsigned long long> list_of_synapses(start2, end2);
@@ -61,6 +67,11 @@ Dialog::Dialog(QWidget *parent)
 /// тут если файл с ошибкой существует читаем ошибку из него NOTE: остановился
 ///    #include <QFileInfo>
 //(не забудьте добавить соответствующий #include-оператор)
+    
+// NOTE: блок отключаемый для настройки сопротивлений
+    
+    // *** начало блока ***
+    
     // TODO: После настройки надо включить (раскомментировать) загрузку из файла error
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
     if (fileExists("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt")==true )
@@ -74,17 +85,19 @@ Dialog::Dialog(QWidget *parent)
         bool ok;
         variable_error=line.toLongLong (&ok,10);//.toLongLong ();
     }
+    else // если файла с ошибкой нет
     
-else // если файла с ошибкой нет
-// если хотим включить настройку сопротивлений синапсов блок отсюда и выше до 66 строки закомментируем
+   // *** конец блока ***
+    
+// если хотим включить настройку сопротивлений синапсов блок отсюда и выше до 66 строки закомментируем (отключим)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///         
     variable_error     =   1073741824-list_of_neurons[200] ; // 1843778052
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///     
 // тут видимо считать из файла 201 нейрон   
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+// если мы подстроили несколько файлов надо обязательно снять коммент с чтения файла ошибки то есть ошибка должна читаться из файла    
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
     if //(eto_ne_1==true)
     //    (list_of_neurons[200]>=1073741824 )
         ( variable_error <=0)
@@ -97,14 +110,14 @@ else // если файла с ошибкой нет
     // Теперь оставим ошибку
     {ui->label->setText("Программа считает что это 1.");} // меняем на это 1
     else {        ui->label->setText("Программа считает что это не 1.");    } //  меняем на это не 1
-   // Отрицательная или 0 ошибка должна замениться на положительную тогда программа определяет правильно.     
+// Отрицательная или 0 ошибка должна замениться на положительную тогда программа определяет правильно.     
     
 //    if (Neiron::Peremennaia_Zariad_Neirona[201]<1073741824){ui->label_4->setText("Программа считает что это не 1.");}
 //    else {
 //        ui->label_4->setText("Программа считает что это 1.");
 //    }
     /// // goto d; // на выход///////////////////////////////////////////////////
-    // если ошибки нет то на выход
+// если ошибки нет то на выход
     if (variable_error<=0) // тут видимо надо менять на если ошибка = или > то на выход то есть ошибка пропадает если становится > 0
         goto d;
     std::cout << "variable_error = " << variable_error<< std::endl;
@@ -112,13 +125,13 @@ else // если файла с ошибкой нет
     std::cout << "list_of_neurons[200]  = " << list_of_neurons[200]  << std::endl;
 b:
     // NOTE: решение
-    ////////////////////////////////////////////// Solution function ////////////////////////////////////////////////////////////
+////////////////////////////////////////////// Solution function ////////////////////////////////////////////////////////////
     for ( var = 100; var < 200; ++var) // This is the range of neurons
     {
         for (int neuron_index = 0, synapse_index = 0;   neuron_index < 200, synapse_index < 10100;   ++neuron_index, synapse_index = synapse_index + 100)
         
         {
-            //FIXME: sigpe арифметическое исключение: (СИНАПСЫ бЫЛИ 0 ДЕление на 0)
+            // sigpe арифметическое исключение: (СИНАПСЫ бЫЛИ 0 ДЕление на 0)
             list_of_neurons[var]=list_of_neurons[var]+  (list_of_neurons[neuron_index]/ list_of_synapses[synapse_index]);    
         }
     }
@@ -130,7 +143,8 @@ b:
     variable_error     =   1073741824-list_of_neurons[200] ;
     //     std::cout << "list_of_neurons[201] = " << list_of_neurons[201]<< std::endl;
     if (variable_error<=0) // to the exit
-        goto c;
+       // goto c;
+        goto d;
     if (list_of_synapses[10100]==1) // to the exit
     {
         std::cout << "The values of all synapses are minimal and equal to 1." << std::endl;
@@ -150,9 +164,9 @@ e:
     else
         variable_synapse_index_counter=0;
     goto b;
-c:
-    std::cout << "The error has disappeared. Variable error = " << variable_error<< std::endl;
-    std::cout << "list_of_neurons[200] = " << list_of_neurons[200]<< std::endl;
+//c:
+//    std::cout << "The error has disappeared. Variable error = " << variable_error<< std::endl;
+//    std::cout << "list_of_neurons[200] = " << list_of_neurons[200]<< std::endl;
 d:
     fstream file;
     file.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt-4",ios_base::out);
@@ -165,7 +179,7 @@ d:
     }
     
     file.close();
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //    fstream file2;
 //    file2.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt",ios_base::out);
     
@@ -191,7 +205,9 @@ d:
             QString::number(variable_error); // Посылаем строку в поток для записи
         fileOut.close(); // Закрываем файл
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// \brief file2
+    /// запись 201 нейрона в файл
     fstream file2;
     file2.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/201.txt",ios_base::out);
     
@@ -204,10 +220,7 @@ d:
     file2.close();       
 // записываем решающий нейрон. В принципе можно не записывать.
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-    if //(eto_ne_1==true)
-     //   (list_of_neurons[200]>=1073741824 )
-
-            ( variable_error <=0)
+    if       ( variable_error <=0)
     {ui->label->setText("Программа считает что это 1.");} // меняем на это 1
     else {        ui->label->setText("Программа считает что это не 1.");    } //  меняем на это не 1
         
@@ -218,7 +231,15 @@ Dialog::~Dialog()
     delete ui;
 }
 
-
+std::string convertULongLongToString(unsigned long long number) {
+    std::string result;
+    do {
+        char digit = '0' + (number % 10);
+        result = digit + result;
+        number /= 10;
+    } while (number > 0);
+    return result;
+}
 void Dialog::on_pushButton_clicked()
 {
     //
@@ -254,9 +275,27 @@ void Dialog::on_pushButton_clicked()
 /// запускаем эту программу заново а этот экземплят текущий закрываем
 
         // restart:
-//        qApp->quit();
+    // NOTE: может тут новую Программу запустить?
+       qApp->quit();
 //    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
-
+// Видимо из файлов можно не читать ведь данные в векторах
+ // for (int x=0; x<15; x++)
+    {
+       // std::cout<< list_of_neurons[0]<< std::endl;
+       // for (unsigned long long elem : list_of_neurons) cout << elem <<std::endl;
+      //  std::cout<< list_of_neurons[0] << std::endl<unsigned long long , std::char_traits<unsigned long long >>;
+//       std::cout// << "list_of_neurons[200]  = "
+//           << list_of_neurons[200]  << std::endl;
+     //   std::cout << "variable_error = " << variable_error<< std::endl;
+       // ui->label->setText("Программа считает что это не 1.");
+   //    ui->textEdit->append (QString::number(list_of_neurons[x]));
+    //   _itoa_s(x, str, 100, 10);
+    //   unsigned long long number = 12345678901234567890ULL;
+//       std::string str = std::to_string(list_of_neurons[x]);
+//       std::cout << str << std::endl;
+//       std::string str = convertULongLongToString(list_of_neurons[x]);
+//       std::cout << "Method 2 Output: " << str << std::endl;
+    }
 }
 
