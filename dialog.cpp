@@ -1,5 +1,7 @@
 #include "dialog.h"
 #include "ui_dialog.h"
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// 
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -22,6 +24,7 @@ int var ;
 int neuron_index, synapse_index;
 int variable_synapse_index_counter=0;
 bool eto_ne_1;
+QString Nazvaniye_fayla_s_neyronami_i_signalom;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Dialog::Dialog
 /// \param parent
@@ -44,12 +47,32 @@ Dialog::Dialog(QWidget *parent)
 {
    ui->setupUi(this);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::ifstream is(
+   QFile f("/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/название файла с нейронами и сигналами.txt");
+   if (f.open(QFile::ReadOnly | QFile::Text))
+   {
+   QTextStream in(&f);
+
+   Nazvaniye_fayla_s_neyronami_i_signalom= in.readAll().toStdString().c_str();
+   std::cout // << f.size()
+       << Nazvaniye_fayla_s_neyronami_i_signalom.toStdString()//in.readAll().toStdString().c_str()
+       << endl;
+ //  goto c;
+   }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::cout << "cycle_of_distinguishing_a_one_with_vectors_GUI"<< std::endl;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    std::ifstream is( //NOTE: сигналы 1
  // "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt" // 1.bmp
    //   "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1-1/neyroni_i_signal.txt" // 1-1.bmp
        
-       "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/0/neyroni_i_signal.txt"
-       
+     //  "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/0/neyroni_i_signal.txt"
+        // 1:
+      //  "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1/neurons_and_signal-2.txt" //NOTE: BMP
+        // 2:
+    //    "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1-1(2)/neyroni_i_signal.txt"
+        // 3:
+     // "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/0-2/neurons_and_signal.txt"
+        Nazvaniye_fayla_s_neyronami_i_signalom.toStdString().c_str()
       //NOTE: считывание в вектор нейронов и сигналов из файла (НАДО Менять для подстройки)
         );
     std::istream_iterator<unsigned long long> start(is), end;
@@ -72,20 +95,21 @@ Dialog::Dialog(QWidget *parent)
     
     // *** начало блока ***
     
-    // TODO: После настройки надо включить (раскомментировать) загрузку из файла error
+    // : После настройки синапсов надо включить (раскомментировать) загрузку из файла error
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-    if (fileExists("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt")==true )
-    {;;
-        // считываем ошибку из файла
-        QFile file("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt");
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-            return;
-        QByteArray line = file.readLine();
-         file.close();
-        bool ok;
-        variable_error=line.toLongLong (&ok,10);//.toLongLong ();
-    }
-    else // если файла с ошибкой нет
+//    if (fileExists("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt")==true )
+//    {;;
+//        // считываем ошибку из файла
+//        QFile file("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt");
+//        if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+//            return;
+//        QByteArray line = file.readLine();
+//         file.close();
+//        bool ok;
+//        variable_error=line.toLongLong (&ok,10);//.toLongLong ();
+//    }
+//    else
+        // если файла с ошибкой нет
     
    // *** конец блока ***
     
@@ -117,9 +141,13 @@ Dialog::Dialog(QWidget *parent)
 //        ui->label_4->setText("Программа считает что это 1.");
 //    }
     /// // goto d; // на выход///////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
 // если ошибки нет то на выход
     if (variable_error<=0) // тут видимо надо менять на если ошибка = или > то на выход то есть ошибка пропадает если становится > 0
         goto d;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///     
     std::cout << "variable_error = " << variable_error<< std::endl;
     std::cout << "Variable error = 1073741824-list_of_neurons[200] = " << 1073741824-list_of_neurons[200]<< std::endl;
     std::cout << "list_of_neurons[200]  = " << list_of_neurons[200]  << std::endl;
@@ -141,7 +169,14 @@ b:
         list_of_neurons[200] = list_of_neurons[200] + (list_of_neurons[neuron_index] / list_of_synapses[synapse_index]);
     }
     variable_error     =   1073741824-list_of_neurons[200] ;
-    //     std::cout << "list_of_neurons[201] = " << list_of_neurons[201]<< std::endl;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///     
+//    if (variable_error<=0) // тут видимо надо менять на если ошибка = или > то на выход то есть ошибка пропадает если становится > 0
+//        goto d;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///     
+      //  std::cout << "list_of_neurons[200] = " << list_of_neurons[200]<< std::endl;
+    // std::cout << "variable_error = " << variable_error<< std::endl;
     if (variable_error<=0) // to the exit
        // goto c;
         goto d;
@@ -180,23 +215,37 @@ d:
     
     file.close();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//    fstream file2;
-//    file2.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt",ios_base::out);
+    fstream file3;
+    file3.open(
+        // NOTE: сигналы 2
+      //  "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt"
+        // 1:
+   //   "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1/neurons_and_signal-2.txt"
+        // 2:
+     // "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1-1(2)/neyroni_i_signal.txt"
+        // 3:
+      // "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/0-2/neurons_and_signal.txt"
+        Nazvaniye_fayla_s_neyronami_i_signalom.toStdString().c_str()
+        ,ios_base::out);
+   
+    vector<unsigned long long>::iterator itr2;
     
-//    vector<unsigned long long>::iterator itr2;
+    for(itr2=list_of_neurons.begin();itr2!=list_of_neurons.end();itr2++)
+    {
+        file3<<*itr2<<endl;
+    }
     
-//    for(itr2=list_of_neurons.begin();itr2!=list_of_neurons.end();itr2++)
-//    {
-//        file2<<*itr2<<endl;
-//    }
-    
-//    file2.close();
+    file3.close();
+                                                                         
     std::cout << "The error has disappeared. Variable error = " << variable_error<< ". Это выход. "<<std::endl;
     std::cout << "list_of_neurons[200] = " << list_of_neurons[200]<< std::endl;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
 // При нажатии на кнопку "Не правильно" надо ошибку изменить на 0   
 // Записать ошибку в файл
-    QFile fileOut("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt"); // Связываем объект с файлом fileout.txt
+    QFile fileOut(
+     //   "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors_GUI/error.txt"
+            "/home/viktor/my_projects_qt_2/Sgenerirovannye_fayly/1/error.txt"      
+                  ); // Связываем объект с файлом fileout.txt
     if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)) 
     { // Если файл успешно открыт для записи в текстовом режиме
         QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
@@ -223,14 +272,22 @@ d:
     if       ( variable_error <=0)
     {ui->label->setText("Программа считает что это 1.");} // меняем на это 1
     else {        ui->label->setText("Программа считает что это не 1.");    } //  меняем на это не 1
-        
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ QProcess().execute("/home/viktor/my_scripts_2/zvuk.sh");
+//  c:  
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief Dialog::~Dialog
+///
 Dialog::~Dialog()
 {
     delete ui;
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief convertULongLongToString
+/// \param number
+/// \return 
+///
 std::string convertULongLongToString(unsigned long long number) {
     std::string result;
     do {
@@ -276,6 +333,8 @@ void Dialog::on_pushButton_clicked()
 
         // restart:
     // NOTE: может тут новую Программу запустить?
+  //  QProcess::execute("/home/viktor/my_projects_qt_2/build-bez_1-Desktop_Qt_5_12_12_GCC_64bit-Debug/bez_1");
+     QProcess::startDetached("/home/viktor/my_projects_qt_2/build-bez_1-Desktop_Qt_5_12_12_GCC_64bit-Debug/bez_1", qApp->arguments());  
        qApp->quit();
 //    QProcess::startDetached(qApp->arguments()[0], qApp->arguments());  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
