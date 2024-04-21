@@ -71,7 +71,7 @@ b:
         {
             
             list_of_neurons[var]=list_of_neurons[var]+  (list_of_neurons[neuron_index]/ list_of_synapses[synapse_index]);    
-        }
+        } // складываем нейроны
     }
     
     for (int   neuron_index = 100, synapse_index = 10000; neuron_index < 200;   ++neuron_index, ++synapse_index)
@@ -90,7 +90,7 @@ b:
 e:
     if (list_of_synapses[variable_synapse_index_counter] >1)
         list_of_synapses[variable_synapse_index_counter]  =  list_of_synapses[variable_synapse_index_counter]-1;
-    
+    // 
     if (list_of_synapses[variable_synapse_index_counter] ==1)
     {
         variable_synapse_index_counter = variable_synapse_index_counter+1;
@@ -98,6 +98,7 @@ e:
     }
     if (variable_synapse_index_counter<10100)
         variable_synapse_index_counter=variable_synapse_index_counter+1;
+        // c начала вычитаем по 1 int variable_synapse_index_counter=0;
     else
         variable_synapse_index_counter=0;
     goto b;
