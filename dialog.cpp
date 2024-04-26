@@ -1,3 +1,4 @@
+// Не распознана 1.
 #include "dialog.h"
 #include "ui_dialog.h"
 #include <fstream>
@@ -6,6 +7,8 @@ using namespace std;
 //#include "ui_dialog.h"
 //#include "dialog.h"
 #include <csetjmp>
+#include <QTextStream>
+#include <QFile>
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<unsigned long long> list_of_synapses ;
 std::vector<unsigned long long
@@ -16,6 +19,7 @@ int var ;
 int neuron_index, synapse_index;
 int variable_synapse_index_counter=0;
 bool eto_ne_1;
+QString    Nazvaniye_fayla_s_neyronami_i_signalom="";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Dialog::Dialog
 /// \param parent
@@ -27,16 +31,38 @@ Dialog::Dialog(QWidget *parent)
     , ui(new Ui::Dialog)
 {
    ui->setupUi(this);
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// тут по-моему ошибка
+    /// Читает нейроны и сигнал из файла. Как вроде должен читать и... Почему он тут читает из какого-то непонятного файла? Он же вроде должен читать из файла который не правильно определился не распознал 1. Если так то он должен читать из файла 
+    /// /home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/название файла с нейронами и сигналами.txt
+    /// точнее не из файла а прочитать название файла и из него загрузиться в вектор
+    /// 
+QString firstLine;
+QFile file("/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/название файла с нейронами и сигналами.txt");
+if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    QTextStream in(&file);
+    firstLine = Nazvaniye_fayla_s_neyronami_i_signalom=in.readLine();
+    file.close();
+} else {
+    // Обработка ошибки открытия файла
+}
+    /// 
+
+    /// 
     std::ifstream is(
-        "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt"
+      //  "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt"
+     Nazvaniye_fayla_s_neyronami_i_signalom.toUtf8().constData()
         );
     std::istream_iterator<unsigned long long> start(is), end;
     std::vector<unsigned long long> list_of_neurons(start, end);
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::ifstream is2("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt");
+    /// читает синапсы из файла
+    ///   Для синапсов тоже должен быть один файл.
+    /// 
+    std::ifstream is2(
+    "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt"
+    );
     std::istream_iterator<unsigned long long> start2(is2), end2;
     std::vector<unsigned long long> list_of_synapses(start2, end2);
    // f:
