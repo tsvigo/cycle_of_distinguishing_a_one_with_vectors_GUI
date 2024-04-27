@@ -11,15 +11,14 @@ using namespace std;
 #include <QFile>
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 std::vector<unsigned long long> list_of_synapses ;
-std::vector<unsigned long long
-            int
-    > list_of_neurons[201] ;//={};
+std::vector<unsigned long long int> list_of_neurons[201] ;//={};
 long long variable_error;
 int var ;
 int neuron_index, synapse_index;
 int variable_synapse_index_counter=0;
 bool eto_ne_1;
 QString    Nazvaniye_fayla_s_neyronami_i_signalom="";
+unsigned long long int polovina_maximalnogo_chisla=1073741824;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Dialog::Dialog
 /// \param parent
@@ -61,7 +60,8 @@ if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
     ///   Для синапсов тоже должен быть один файл.
     /// 
     std::ifstream is2(
-    "/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt"
+    //"/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt"
+    "/home/viktor/my_projects_qt_2/Funktsiya_Resheniya_2/synapses.txt"
     );
     std::istream_iterator<unsigned long long> start2(is2), end2;
     std::vector<unsigned long long> list_of_synapses(start2, end2);
@@ -132,17 +132,17 @@ c:
     std::cout << "The error has disappeared. Variable error = " << variable_error<< std::endl;
     std::cout << "list_of_neurons[200] = " << list_of_neurons[200]<< std::endl;
 d:
-    fstream file;
-    file.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt",ios_base::out);
+    fstream file2;
+    file2.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/synapses.txt",ios_base::out);
     
     vector<unsigned long long>::iterator itr;
     
     for(itr=list_of_synapses.begin();itr!=list_of_synapses.end();itr++)
     {
-        file<<*itr<<endl;
+        file2<<*itr<<endl;
     }
     
-    file.close();
+    file2.close();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //    fstream file2;
 //    file2.open("/home/viktor/my_projects_qt_2/cycle_of_distinguishing_a_one_with_vectors/neurons_and_signal.txt",ios_base::out);
@@ -178,8 +178,9 @@ void Dialog::on_pushButton_clicked()
     if (variable_error<=0) // тут видимо надо менять на если ошибка = или > то на выход то есть ошибка пропадает если становится > 0
         goto d;
     std::cout << "variable_error = " << variable_error<< std::endl;
-    std::cout << "Variable error = 1073741824-list_of_neurons[200] = " << 1073741824-list_of_neurons[200]<< std::endl;
-    std::cout << "list_of_neurons[200]  = " << list_of_neurons[200]  << std::endl;
+//  unsigned long long int raznosty= polovina_maximalnogo_chisla-list_of_neurons[200];
+  //  std::cout << "Variable error = 1073741824-list_of_neurons[200] = " << polovina_maximalnogo_chisla-list_of_neurons[200]<< std::endl;
+ //   std::cout << "list_of_neurons[200]  = " << list_of_neurons[200]  << std::endl;
 b:
     ////////////////////////////////////////////// Solution function ////////////////////////////////////////////////////////////
     for ( var = 100; var < 200; ++var) // This is the range of neurons
